@@ -4,25 +4,24 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <cstdlib>
 
-using namespace std;
-
-string getLemmas(const string& text) {
-    string command = "python3 lemmatizer.py \"" + text + "\" > lemma_result.txt";
+std::string getLemmas(const std::string& text) {
+    std::string command = "python3 lemmatizer.py \"" + text + "\" > lemma_result.txt";
     system(command.c_str());
 
-    ifstream result("lemma_result.txt");
-    string lemmas;
-    getline(result, lemmas);
+    std::ifstream result("lemma_result.txt");
+    std::string lemmas;
+    std::getline(result, lemmas);
     result.close();
 
     return lemmas;
 }
 
-vector<string> split(const string& s) {
-    istringstream iss(s);
-    vector<string> words;
-    string word;
+std::vector<std::string> split(const std::string& s) {
+    std::istringstream iss(s);
+    std::vector<std::string> words;
+    std::string word;
     while (iss >> word) {
         words.push_back(word);
     }
@@ -30,37 +29,37 @@ vector<string> split(const string& s) {
 }
 
 int main() {
-    vector<string> filenames = {"tiger.txt", "elephant.txt", "Asian_Elephant.txt","Red_Panda.txt","Bengal_Tiger.txt"};
+    std::vector<std::string> filenames = {"tiger.txt", "elephant.txt", "Asian_Elephant.txt","Red_Panda.txt","Bengal_Tiger.txt"};
 
-    cout << "Enter a word to search: ";
-    string query;
-    getline(cin, query);
+    std::cout << "Enter a word to search: ";
+    std::string query;
+    std::getline(std::cin, query);
 
-    string queryLemma = getLemmas(query);
-    cout << "Searching for lemma: " << queryLemma << endl;
+    std::string queryLemma = getLemmas(query);
+    std::cout << "Searching for lemma: " << queryLemma << std::endl;
 
-    for (const string& filename : filenames) {
-        ifstream file(filename);
+    for (const std::string& filename : filenames) {
+        std::ifstream file(filename);
         if (!file.is_open()) {
-            cerr << "Could not open file: " << filename << endl;
+            std::cerr << "Could not open file: " << filename << std::endl;
             continue;
         }
 
-        cout << "Reading file: " << filename << endl;
-        string line;
+        std::cout << "Reading file: " << filename << std::endl;
+        std::string line;
         int line_number = 0;
 
         bool match_found = false;
 
-        while (getline(file, line)) {
+        while (std::getline(file, line)) {
             line_number++;
 
-            string lineLemmas = getLemmas(line);
-            vector<string> lemmasInLine = split(lineLemmas);
+            std::string lineLemmas = getLemmas(line);
+            std::vector<std::string> lemmasInLine = split(lineLemmas);
 
             int count=0;
 
-            for(const string& lemma : lemmasInLine){
+            for(const std::string& lemma : lemmasInLine){
                 if(lemma==queryLemma){
                     count++;
                 }
@@ -68,18 +67,19 @@ int main() {
 
             if (count > 0) {
                 match_found = true;
-                cout << "Line " << line_number << ": " << count << " appearance(s)" << endl;
+                std::cout << "Line " << line_number << ": " << count << " appearance(s)" << std::endl;
             }
             
         }
 
         if (!match_found) {
-            cout << "No matches found" << endl;
+            std::cout << "No matches found" << std::endl;
         }
 
         file.close();
-        cout << "----------------------------" << endl;
+        std::cout << "----------------------------" << std::endl;
     }
 
     return 0;
 }
+
