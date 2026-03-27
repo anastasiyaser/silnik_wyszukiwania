@@ -95,6 +95,7 @@ Line 3: 1 appearance(s)
 
 Project completed as part of the "Wstęp do programowania" (Introduction to Programming) course
 Year 1, Semester 1
+
 Developed by Anastasiya Serebryakova, Anjei Zhykh
 
 ## Notes
